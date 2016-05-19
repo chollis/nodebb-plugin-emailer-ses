@@ -1,0 +1,13 @@
+{
+    "id": "nodebb-plugin-emailer-ses",
+    "name": "Emailer (AWS SES)",
+    "description": "AWS SES Emailer for NodeBB",
+    "url": "https://github.com/chollis/nodebb-plugin-emailer-ses",
+    "library": "./emailer-ses.js",
+    "templates": "./templates",
+    "hooks": [
+        { "hook": "filter:email.send", "method": "send" },
+        { "hook": "filter:admin.header.build", "method": "admin.menu" },
+        { "hook": "static:app.load", "method": "init" }
+    ]
+}
