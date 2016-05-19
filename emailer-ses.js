@@ -1,6 +1,6 @@
 var aws = require('aws-sdk');
 var winston = module.parent.require('winston');
-var settings = module.parent.require('./settings');
+var Settings = module.parent.require('./settings');
 var Emailer = {};
 var ses;
 var defaultSettings = {
@@ -11,12 +11,13 @@ var defaultSettings = {
         fromAddress: ''
     }
 };
+var debug;
 
 var settings = new Settings('emailer-ses', '0.1.0', defaultSettings, function(){
     if (debug){
         winston.info('emailer-ses settings have been loaded.');
     }
-};
+});
                             
 function sesConnect(){
     if (!ses){
@@ -27,17 +28,12 @@ function sesConnect(){
 }
 
 Emailer.init = function(params, callback){
-    function render(req, res, next){
-        res.render('admin/plugins/emailer-ses.tpl', {});
-    }
+    debug = env === 'development';
     
     var aKey = settings.get('strings.accessKeyID');
     var sKey = settings.get('strings.secretAccessKey');
     var reg = settings.get('strings.region');
     aws.config.update({accesskeyID: aKey, secretAccessKey: sKey, region: reg});
-    
-    params.router.get('/admin/plugins/mailer-ses', params.middleware.admin.buildHeader, render);
-    params.router.get('/api/admin/plugins/emailer-ses', render);
     
     callback();
 };
@@ -73,18 +69,6 @@ Emailer.send = function(data, callback){
             winston.info('Email sent successfully');
         }
     })
-};
-
-Emailer.admin = {
-    menu: function(header, callback){
-        header.plugins.push({
-            "route": '/plugins/emailer-ses',
-            "icon": 'fa-envelope-o',
-            "name": 'Emailer (AWS SES)'
-        });
-        
-        callback(null, header);
-    }
 };
 
 module.exports = Emailer;
