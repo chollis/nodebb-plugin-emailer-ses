@@ -1,0 +1,29 @@
+{
+    "name": "nodebb-plugin-emailer-ses",
+    "version": "0.1.0",
+    "description": "A plugin for NodeBB to use AWS SES fro outbound emails",
+    "main": "emailer-ses.js",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/chollis/nodebb-plugin-emailer-ses"
+    },
+    "keywords": [
+        "nodebb",
+        "plugin",
+        "emailer",
+        "aws", "amazon",
+        "ses"
+    ],
+    "author": "Craig Hollis <chollis@chollis.co.uk>",
+    "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/chollis/nodebb-plugin-emailer-ses/issues"
+    },
+    "homepage": "https://github.com/chollis/nodebb-plugin-emailer-ses",
+    "nbbpm": {
+        "compatibility": "^1.0.0"
+    },
+    "dependencies": {
+        "aws-sdk": "^2.3.0"
+    }
+}
