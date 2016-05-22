@@ -54,13 +54,13 @@
 </form>
 
 <script type="text/javascript">
-    require(['settings'], function(settings){
-        var form = $('#emailer-settings');
-        settings.sync('emailer-ses', form);
+    require(['settings'], function(Settings){
+        var form = $('.emailer-settings');
+        Settings.load('emailer-ses', form);
         
         $('#save').click(function(event){
             event.preventDefault();
-            settings.persist('emailer-ses', form, function() {
+            Settings.save('emailer-ses', form, function() {
                 app.alert({
                     type: 'success',
                     alert_id: 'emailer-ses-saved',

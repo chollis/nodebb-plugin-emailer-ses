@@ -7,13 +7,13 @@
         "type": "git",
         "url": "https://github.com/chollis/nodebb-plugin-emailer-ses"
     },
-    "keywords": {
+    "keywords": [
         "nodebb",
         "plugin",
         "emailer",
         "aws", "amazon",
         "ses"
-    },
+    ],
     "author": "Craig Hollis <chollis@chollis.co.uk>",
     "license": "MIT",
     "bugs": {
