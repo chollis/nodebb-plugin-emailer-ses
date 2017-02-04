@@ -11,10 +11,18 @@ Emailer.init = function(params, callback){
     }
     
     meta.settings.get('emailer-ses', function(err, settings) {
-        if(!err && settings && settings.accessKeyID && settings.secretAccessKey && settings.region && settings.fromAddress) {
-            var creds = new aws.Credentials(settings.accessKeyID, settings.secretAccessKey, null);
-            ses = new aws.SES({credentials: creds, region: settings.region, apiVersion: '2010-12-01'});
-            fromAddress = settings.fromAddress;
+        if(!err && settings && settings.region && settings.fromAddress) {
+            var creds,
+                iam = new aws.IAM();
+
+            if (settings.accessKeyID && settings.secretAccessKey){
+                creds = new aws.Credentials(settings.accessKeyID, settings.secretAccessKey, null);
+                ses = new aws.SES({credentials: creds, region: settings.region, apiVersion: '2010-12-01'});
+                fromAddress = settings.fromAddress;
+            }else {
+                ses = new aws.SES({region: settings.region, apiVersion: '2010-12-01'});
+                fromAddress = settings.fromAddress;
+            }
         } else {
             winston.error('[emailer-ses] Settings are not configured!');
         }
