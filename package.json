@@ -1,7 +1,7 @@
 {
     "name": "nodebb-plugin-emailer-ses",
-    "version": "0.1.0",
-    "description": "A plugin for NodeBB to use AWS SES fro outbound emails",
+    "version": "0.2.0",
+    "description": "A plugin for NodeBB to use AWS SES for sending outbound emails",
     "main": "emailer-ses.js",
     "repository": {
         "type": "git",
@@ -25,5 +25,12 @@
     },
     "dependencies": {
         "aws-sdk": "^2.3.0"
-    }
+    },
+    "contributors": [
+        {
+            "name": "Louise McMahon",
+            "email": "louise@louisemcmahon.co.uk",
+            "url": "http://louisemcmahon.co.uk"
+        }
+    ]
 }

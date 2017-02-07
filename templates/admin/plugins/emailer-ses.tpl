@@ -1,4 +1,4 @@
-<h1><i class="fa fa-envelope-o"></i>Emailer (AWS SES)</h1>
+<h1><i class="fa fa-envelope-o"></i> Emailer (AWS SES)</h1>
 
 <div class="row">
     <div class="col-lg-12">
@@ -8,8 +8,9 @@
                 <li>An AWS account</li>
                 <li>SES configured for the region nearest your server</li>
                 <li>A validated email address or domain in AWS SES</li>
-                <li>An IAM user configured for API access to SES (for now, future options may be different)</li>
+                <li>An IAM user configured with API access to SES or an IAM role configured for your instance</li>
             </ol>
+            <p>To use an IAM role, leave the AccessKeyID and SecretAccessKey blank.</p>
         </blockquote>
     </div>
 </div>
