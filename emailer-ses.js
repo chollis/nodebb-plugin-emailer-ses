@@ -58,10 +58,11 @@ Emailer.send = function(data, callback){
                     }
                 }
             }
-        }, function(err, data){
+        }, function(err, result){
             if (err) {
                 winston.error('[emailer-ses] Problem sending email: ' + err);
             }
+            callback(err, data);
         });
     }
 };
