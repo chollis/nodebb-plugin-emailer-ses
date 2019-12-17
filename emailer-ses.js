@@ -36,7 +36,8 @@ Emailer.init = function(params, callback){
 
 Emailer.send = function(data, callback){
     if (!ses) {
-        return winston.error('[emailer-ses] Connection to SES failed!');
+        winston.error('[emailer-ses] Connection to SES failed!');
+        return callback(null, data);
     } else {
         ses.sendEmail({
             Source: fromAddress,
