@@ -1,6 +1,6 @@
 {
     "name": "nodebb-plugin-emailer-ses",
-    "version": "0.2.0",
+    "version": "0.3.0",
     "description": "A plugin for NodeBB to use AWS SES for sending outbound emails",
     "main": "emailer-ses.js",
     "repository": {
@@ -31,6 +31,11 @@
             "name": "Louise McMahon",
             "email": "louise@louisemcmahon.co.uk",
             "url": "http://louisemcmahon.co.uk"
-        }
+        },
+		{
+			"name": "Barış Soner Uşaklı",
+			"email" "baris@nodebb.org",
+			"url": "http://nodebb.org/"
+		}
     ]
 }
