@@ -1,6 +1,6 @@
 var aws = require('aws-sdk');
-var winston = module.parent.require('winston');
-var meta = module.parent.require('./meta');
+var winston = require.main.require('winston');
+var meta = require.main.require('./src/meta');
 var Emailer = {};
 var ses;
 var fromAddress;
