@@ -11,7 +11,8 @@
         "nodebb",
         "plugin",
         "emailer",
-        "aws", "amazon",
+        "aws",
+        "amazon",
         "ses"
     ],
     "author": "Craig Hollis <chollis@chollis.co.uk>",
@@ -32,11 +33,11 @@
             "email": "louise@louisemcmahon.co.uk",
             "url": "http://louisemcmahon.co.uk"
         },
-		{
-			"name": "Barış Soner Uşaklı",
-			"email": "baris@nodebb.org",
-			"url": "http://nodebb.org/"
-		},
+        {
+            "name": "Barış Soner Uşaklı",
+            "email": "baris@nodebb.org",
+            "url": "http://nodebb.org/"
+        },
         {
             "name": "Artur Matczak",
             "url": "https://github.com/gwynnarth"
