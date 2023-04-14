@@ -53,26 +53,3 @@
         <button class="btn btn-lg btn-primary" id="save" type="button">Save</button>
     </fieldset>
 </form>
-
-<script type="text/javascript">
-    require(['settings'], function(Settings){
-        var form = $('.emailer-settings');
-        Settings.load('emailer-ses', form);
-        
-        $('#save').click(function(event){
-            event.preventDefault();
-            Settings.save('emailer-ses', form, function() {
-                app.alert({
-                    type: 'success',
-                    alert_id: 'emailer-ses-saved',
-                    title: 'Settings saved',
-                    message: 'Click here to reload NodeBB',
-                    timeout: 2500,
-                    clickfn: function(){
-                        socket.emit('admin.reload');
-                    }
-                });
-            });
-        });
-    });
-</script>
