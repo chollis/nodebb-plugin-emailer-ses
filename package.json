@@ -25,7 +25,8 @@
         "compatibility": "^1.0.0"
     },
     "dependencies": {
-        "aws-sdk": "^2.3.0"
+        "aws-sdk": "2.1358.0",
+        "aws-sdk-js-codemod": "^0.10.3"
     },
     "contributors": [
         {
