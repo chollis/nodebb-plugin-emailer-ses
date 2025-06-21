@@ -1,84 +1,76 @@
-var aws = require('aws-sdk');
-var winston = require.main.require('winston');
-var meta = require.main.require('./src/meta');
-var Emailer = {};
+const { SESv2Client, SendEmailCommand } = require('@aws-sdk/client-sesv2');
+const winston = require.main.require('winston');
+const meta = require.main.require('./src/meta');
+const routeHelpers = require.main.require('./src/routes/helpers');
+const controllers = require('./lib/controllers');
+
+const Emailer = {};
+let sesClient;
 var ses;
-var fromAddress;
+let senderAddress;
 
-Emailer.init = function(params, callback){
-    function render(req, res, next){
-        res.render('admin/plugins/emailer-ses', {});
+Emailer.init = async(params) => {
+    const { router } = params;
+
+    const { region, fromAddress } = await meta.settings.get('emailer-ses');
+    if (!region || ! fromAddress) {
+        winston.error(`[plugins/emailer-ses] Region and FromAddress must both be specified for emails to send.`);
     }
-    
-    meta.settings.get('emailer-ses', function(err, settings) {
-        if(!err && settings && settings.region && settings.fromAddress) {
-            var creds,
-                iam = new aws.IAM();
 
-            if (settings.accessKeyID && settings.secretAccessKey){
-                creds = new aws.Credentials(settings.accessKeyID, settings.secretAccessKey, null);
-                ses = new aws.SES({credentials: creds, region: settings.region, apiVersion: '2010-12-01'});
-                fromAddress = settings.fromAddress;
-            }else {
-                ses = new aws.SES({region: settings.region, apiVersion: '2010-12-01'});
-                fromAddress = settings.fromAddress;
-            }
-        } else {
-            winston.error('[emailer-ses] Settings are not configured!');
-        }
-    });
-    
-    params.router.get('/admin/plugins/emailer-ses', params.middleware.admin.buildHeader, render);
-    params.router.get('/api/admin/plugins/emailer-ses', render);
-    
-    callback();
-};
+    sesClient = new SESv2Client({ region: region });
+    senderAddress = fromAddress;
 
-Emailer.send = function(data, callback){
-    if (!ses) {
-        winston.error('[emailer-ses] Connection to SES failed!');
-        return callback(null, data);
-    } else {
-        winston.info('[emailer-ses] Sending email to: ' + data.to);
-        ses.sendEmail({
-            Source: fromAddress,
-            Destination: {
-                ToAddresses: [
-                    data.to
-                ]
-            },
-            Message: {
+    routeHelpers.setupAdminPageRoute(router, '/admin/plugins/emailer-ses', controllers.renderAdminPage);
+}
+
+Emailer.sendEmail = async(data) => {
+    if (!sesClient) {
+        winston.error(`[plugins/emailer-ses] No SES Client available.`);
+        throw new Error('No SES Client available, check settings.');
+    }
+
+    const input = {
+        FromEmailAddress: senderAddress,
+        Destination: {
+            ToAddresses: [
+                data.to
+            ]
+        },
+        Content: {
+            Simple: {
                 Subject: {
                     Data: data.subject
                 },
                 Body: {
-                    Html: {
-                        Data: data.html,
-                    },
                     Text: {
-                        Data: data.plaintext,
+                        Data: data.plaintext
+                    },
+                    Html: {
+                        Data: data.html
                     }
-                }
-            }
-        }, function(err, result){
-            if (err) {
-                winston.error('[emailer-ses] Problem sending email: ' + err);
-            }
-            callback(err, data);
-        });
-    }
-};
+                },
+            },
+        },
+    };
 
-Emailer.admin = {
-    menu: function(header, callback){
-        header.plugins.push({
-            "route": '/plugins/emailer-ses',
-            "icon": 'fa-envelope-o',
-            "name": 'Emailer (AWS SES)'
-        });
-        
-        callback(null, header);
+    const command = new SendEmailCommand(input);
+
+    try {
+        const response = await sesClient.send(command);
+    } catch (error) {
+        winston.error(`[plugins/emailer-ses] SES Error: ${JSON.stringify(error)}.`);
+        throw new Error(error);
     }
+}
+
+Emailer.addAdminNavigation = (header) => {
+    header.plugins.push({
+        route: '/plugins/emailer-ses',
+        icon: 'fa-envelope-o',
+        name: 'Emailer (AWS SES)'
+    });
+
+    return header;
 };
 
 module.exports = Emailer;

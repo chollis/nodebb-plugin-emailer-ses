@@ -6,11 +6,11 @@
     "library": "./emailer-ses.js",
     "templates": "templates",
     "hooks": [
-        { "hook": "static:email.send", "method": "send" },
-        { "hook": "filter:admin.header.build", "method": "admin.menu" },
-        { "hook": "static:app.load", "method": "init" }
+        { "hook": "static:app.load", "method": "init" },
+        { "hook": "static:email.send", "method": "sendEmail" },
+        { "hook": "filter:admin.header.build", "method": "addAdminNavigation" } 
     ],
     "modules": {
-		"../admin/plugins/emailer-ses.js": "static/lib/admin.js"
+		"../admin/plugins/emailer-ses.js": "./public/lib/admin.js"
 	}
 }
